@@ -7,9 +7,10 @@ import {
 } from './Column'
 import { AddNewItem } from './AddNewItem';
 import { useAppState } from './state/AppStateContext';
+import { addList } from './state/actions';
 
 export const App = () => {
-  const { lists } = useAppState()
+  const { lists, dispatch } = useAppState()
   return (
     <AppContainer>
       {
@@ -17,7 +18,7 @@ export const App = () => {
           <Column text={list.text} id={list.id} key={list.id}></Column>
         ))
       }
-      <AddNewItem onAdd={console.log} toggleButtonText='+ Add another list' />
+      <AddNewItem onAdd={(text) => dispatch(addList(text))} toggleButtonText='+ Add another list' />
     </AppContainer>
   )
 }
