@@ -7,7 +7,8 @@ export type ColumnDragItem = {
 export type TaskDragItem = {
     id: string;
     text: string;
-    type: "TASK"
+    type: "CARD";
+    columnId: string;
 }
 
 export type DragItem = ColumnDragItem | TaskDragItem
