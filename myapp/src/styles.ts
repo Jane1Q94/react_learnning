@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const AppContainer = styled.div`
     align-items: flex-start;
@@ -10,10 +10,12 @@ export const AppContainer = styled.div`
     width: 100%;
 `
 interface DragPreviewContainerProps {
-  isHidden?: boolean
+  isHidden?: boolean;
+  isPreview?: boolean;
 }
 export const DragItemPreview = styled.div<DragPreviewContainerProps>`
-  opacity: ${(props) => props.isHidden ? 0.3 : 1}
+  transform: ${(props) => props.isPreview ? "rotate(5deg)" : undefined};
+  opacity: ${(props) => props.isHidden ? 0 : 1};
 `
 
 export const ColumnContainer = styled(DragItemPreview)`
@@ -40,7 +42,7 @@ export const CardContainer = styled(DragItemPreview)`
     box-shadow: #091e4240 0px 1px 0px 0px;
 `
 type AddItemButtonProps = {
-    dark?: boolean
+  dark?: boolean
 }
 export const AddItemButton = styled.button<AddItemButtonProps>`
    background-color: #ffffff3d;
@@ -85,3 +87,27 @@ export const NewItemInput = styled.input`
   width: 100%;
 `
 
+export const CustomDragLayerContainer = styled.div`
+   height: 100%;
+   width: 100%;
+   left: 0;
+   top: 0;
+   position: fixed;
+   z-index: 100;
+   pointer-events: none;
+`
+
+type DragPreivewWrapperProps = {
+  position: {
+    x: number;
+    y: number
+  }
+}
+
+export const DragPreivewWrapper = styled.div.attrs<DragPreivewWrapperProps>(
+  ({ position: { x, y } }) => ({
+    style: {
+      transform: `translate(${x}px, ${y}px)`
+    }
+  })
+) <DragPreivewWrapperProps>``

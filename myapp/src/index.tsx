@@ -5,6 +5,7 @@ import { App } from './App';
 import { AppStateProvider } from './state/AppStateContext';
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend as Backend } from 'react-dnd-html5-backend'
+import { CustomDragLayer } from './CustomDragLayer';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,6 +15,7 @@ root.render(
     {/* @ts-ignore */}
     <DndProvider backend={Backend}>
       <AppStateProvider>
+        <CustomDragLayer />
         <App />
       </AppStateProvider>
     </DndProvider>
