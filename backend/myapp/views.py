@@ -10,10 +10,47 @@ def get_all_data(request):
     return JsonResponse(data, safe=False)
 
 
-# def save_all_data(request):
-#     if request.method == "post":
-#         data = json.loads(request.body)
-#         pass
+'[{"id": 1, "title": "TODO", "tasks": [{"id": 4, "title": "Learnning Kubernetes", "columnId": 1}]}, {"id": 2, "title": "DOING", "tasks": []}, {"id": 3, "title": "DONE", "tasks": []}]'
+
+
+def save_all_data(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        cates, tasks = [], []
+        for cate in data:
+            cate_obj = save_category(cate)
+            cates.append(cate_obj)
+            cate_tasks = cate.get("tasks", [])
+            for t in cate_tasks:
+                task_obj = save_task(t, cate_obj)
+                tasks.append(task_obj)
+
+        with transaction.atomic():
+            Category.objects.all().delete()
+            Category.objects.bulk_create(cates)
+            Task.objects.bulk_create(tasks)
+
+        cates = Category.objects.all()
+        data = [get_single_category_data(cate) for cate in cates]
+
+        return JsonResponse(data, safe=False)
+
+    return JsonResponse([], safe=False)
+
+
+def save_category(cate_data: dict):
+    return Category(
+        id=cate_data.get("id"),
+        title=cate_data.get("title")
+    )
+
+
+def save_task(task_data: dict, cate: Category):
+    return Task(
+        title=task_data.get("title"),
+        cate=cate,
+        id=task_data.get("id")
+    )
 
 
 def get_single_category_data(category: Category):
